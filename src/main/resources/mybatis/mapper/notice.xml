@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.NoticeDao">
+	<insert id="insert" parameterType="notice">
+		<selectKey keyProperty="nno" resultType="int" order="BEFORE">
+				select seq_nno.nextval from dual
+		</selectKey>
+			insert into notice(nno, ntitle, ncontent, ndate, mid)
+			values(#{nno}, #{ntitle}, #{ncontent}, sysdate, #{mid})
+	</insert>
+
+	<select id="countAll" resultType="int">
+		select count(*) from notice
+	</select>
+
+	<select id="selectByPage" parameterType="pager" resultType="notice">
+		<![CDATA[ 
+		select rnum, mid, nno, ntitle, ncontent, ndate
+		from(
+			select rownum as rnum, mid, nno, ntitle, ncontent, ndate
+			from(
+				select mid, nno, ntitle, ncontent, ndate
+				from notice
+				order by ndate desc	
+			)
+			where rownum <= #{endRowNo}
+		)
+		where rnum >= #{startRowNo}
+		]]>
+	</select>
+
+	<select id="selectNoticeByNno" parameterType="int" resultType="notice">
+			select mid, nno, ntitle, ncontent, ndate
+			from notice
+			where nno=#{nno} 
+	</select>
+
+	<update id="updateByNno" parameterType="notice">
+		update notice set ntitle=#{ntitle}, ncontent=#{ncontent}
+		where nno=#{nno}
+	</update>
+
+	<delete id="deleteByNno" parameterType="int">
+      delete from notice where nno=#{nno}
+   </delete> 
+
+	<select id="noticeByPage" parameterType="Map" resultType="Notice">
+	    select mid, nno, ntitle, ncontent, ndate
+	    from (
+	        select mid, nno, ntitle, ncontent, ndate, rownum as rnum
+	        from notice
+	        where #{pager.endRowNo} >= rownum
+	        order by nno desc
+	    )
+	    where rnum >= #{pager.startRowNo}
+	</select>
+
+	<select id="getAllNotices" resultType="Notice">
+	    select mid, nno, ntitle, ncontent, ndate
+	    from notice
+	</select>
+	
+	<select id="getNotice" resultType="Notice">
+	    <![CDATA[
+	    select mid, nno, ntitle, ncontent, ndate
+	    from (
+	        select mid, nno, ntitle, ncontent, ndate
+	        from notice
+	        order by ndate desc
+	    )
+	    where rownum <= 4
+	    ]]>
+	</select>
+</mapper>

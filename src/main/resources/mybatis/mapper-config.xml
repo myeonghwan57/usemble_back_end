@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+	
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	<typeAliases>
+		<typeAlias alias="member" type="com.mycompany.webapp.dto.Member"/>
+		<typeAlias alias="pager" type="com.mycompany.webapp.dto.Pager" />
+		<typeAlias alias="category" type="com.mycompany.webapp.dto.Category" />
+		<typeAlias alias="mcategory" type="com.mycompany.webapp.dto.Mcategory" />
+		<typeAlias alias="mlike" type="com.mycompany.webapp.dto.Mlike" />
+		<typeAlias alias="notice" type="com.mycompany.webapp.dto.Notice" />
+		<typeAlias alias="review" type="com.mycompany.webapp.dto.Review" />
+		<typeAlias alias="sjoin" type="com.mycompany.webapp.dto.Sjoin" />
+		<typeAlias alias="social" type="com.mycompany.webapp.dto.Social" />
+		<typeAlias alias="image" type="com.mycompany.webapp.dto.Image" />
+		<typeAlias alias="alarm" type="com.mycompany.webapp.dto.Alarm" />
+	</typeAliases>
+</configuration>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.MemberDao">
+	<insert id="insert" parameterType="Member"> 
+		insert into member(mid, mname, mpassword, mbirth, msex, mphone, mbankName, mpayAccount, mprofileData, mprofileType, mprofileName,
+		mintroduce, mrole, menabled, mdate, agree)
+		values(#{mid},#{mname},#{mpassword},#{mbirth},#{msex},#{mphone},#{mbankName},#{mpayAccount},#{mprofileData},#{mprofileType},
+		#{mprofileName},#{mintroduce},#{mrole},#{menabled},sysdate, #{agree})
+	</insert>
+
+	<select id="selectByMid" parameterType="String" resultType="Member">
+		select mid, mname, mpassword, menabled, mrole
+		from member
+		where mid = #{mid}
+	</select>
+
+	<select id="selectOfficialProfileByMid" parameterType="String" resultType="Member">
+		select mid, mname, mintroduce, mdate
+		from member
+		where mid = #{mid}
+	</select>
+
+	<update id="withdrawMemberByMid" parameterType="String">
+		update member
+		set menabled=0
+		where mid=#{mid}
+	</update>
+
+	<select id ="checkId" parameterType="String" resultType="int">
+		select count(mid) 
+		from member
+		where mid = #{mid}
+	</select>
+
+	<select id="attachSelectByMid" parameterType="String" resultType="Member">
+		select mid, mprofileData, mprofileType, mprofileName
+		from member
+		where mid=#{mid}
+	</select>
+
+	<update id="updateProfileByMid" parameterType="Member">
+		update member set mintroduce=#{mintroduce}  
+			<if test="mprofileName != null">
+				,mprofileData=#{mprofileData},
+				mprofileType=#{mprofileType},
+				mprofileName=#{mprofileName}
+			</if>
+		where mid=#{mid}
+	</update>
+
+	<update id="updateMpasswordByMid" parameterType="Member">
+		update member
+		set mpassword=#{mpassword}
+		where mid=#{mid}
+	</update>
+
+	<update id="updatePrivacy" parameterType="Member">
+		update member
+		set mname=#{mname}, 
+			mphone=#{mphone},
+			mbankName=#{mbankName},
+			mpayAccount=#{mpayAccount}
+		where mid=#{mid}
+	</update>
+
+	<update id="updateAgree" parameterType="Member">
+		update member
+		set agree=#{agree}
+		where mid=#{mid}
+	</update>
+
+	<select id="selectPrivacyByMid" parameterType="String" resultType="Member"> 
+		select mid, mname, mbirth, mphone, msex, mbankName, mpayAccount, agree
+		from member
+		where mid= #{mid}
+	</select>
+
+	<update id="putAgree" parameterType="String">
+		update member set agree=#{agree} where mid=#{mid}
+	</update>
+
+	<select id="selectByPage" parameterType="pager" resultType="member">
+		<![CDATA[ 
+		select rnum, mname, mid, msex, mdate, menabled
+		from(
+			select rownum as rnum, mname, mid, msex, mdate, menabled
+			from(
+				select mname, mid, msex, mdate, menabled
+				from member
+				order by mdate desc	
+			)
+			where rownum <= #{endRowNo}
+		)
+		where rnum >= #{startRowNo}
+		]]>
+	</select>
+
+	<select id="countAll" resultType="int">
+      select count(*) from member
+   </select>
+
+	<select id="getJoinMemberBySno" parameterType="int" resultType="member">
+		select mid, mname, msex, mbirth
+		from member 
+		where mid in (
+			select mid
+			from sjoin
+			where sno=#{sno}
+		)
+	</select>
+
+	<update id="updateMemberEnableByMid" parameterType="Member">
+		update member
+		set menabled=#{menabled}
+		where mid=#{mid}
+	</update>
+
+	<select id="selectMemberAdminByMid" parameterType="String" resultType="member">
+		select mid, mname, mphone, msex, mbirth, mbankname, mpayaccount, menabled
+		from member
+		where mid=#{mid}
+	</select>
+
+	<select id="countMemberByKeyword" parameterType="Map" resultType="int">
+		select count(*)
+		from member
+		where 
+		<if test="option.equals('name')">
+			mname like '%' || #{keyword} || '%'
+		</if>
+		<if test="option.equals('mid')">
+			mid like '%' || #{keyword} || '%'
+		</if>
+	</select>
+
+	<select id="selectMemberByKeywordPage" parameterType="Map" resultType="member">
+		select rnum, mname, mid, msex, mdate, menabled
+		from(
+			select rownum as rnum, mname, mid, msex, mdate, menabled
+			from(
+				select mname, mid, msex, mdate, menabled
+				from member
+				where <if test="option.equals('name')">
+						mname like '%' || #{keyword} || '%'
+					</if>
+					<if test="option.equals('mid')">
+						mid like '%' || #{keyword} || '%'
+					</if>
+				order by mdate desc	
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]>
+	</select>
+
+	<select id="selectAllMemeber" resultType="member">
+		select mid, msex 
+		from member 
+	</select>
+</mapper>

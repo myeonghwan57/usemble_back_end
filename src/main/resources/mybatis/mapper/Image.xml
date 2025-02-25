@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.ImageDao">
+	<insert id="insertImage" parameterType="image">
+		insert into image(iname, itype, idata)
+		values(#{iname}, #{itype}, #{idata})
+	</insert>
+	
+	<select id="selectImageByName" parameterType="String" resultType="image">
+		select iname, itype, idata
+		from image
+		where iname=#{iname}
+	</select>
+</mapper>

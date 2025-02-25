@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.SocialDao">
+<insert id="insert" parameterType="social">
+	<selectKey keyProperty="sno" resultType="int" order="BEFORE">
+			select seq_sno.nextval from dual
+	</selectKey>
+	insert into social(sno, mid, ctno, stitle, scontent,
+	 sthumbdata, sthumbtype, sthumbname, swritedate, sstartdate, 
+	 sstarttime, sfee, smembercount, sstatus, saddress, sdeadline)
+	 values(#{sno}, #{mid}, #{ctno}, #{stitle}, #{scontent}, 
+	 #{sthumbData}, #{sthumbType}, #{sthumbName}, sysdate, #{sstartDate},
+	 #{sstartTime}, #{sfee}, #{smemberCount}, #{sstatus}, #{saddress}, #{sdeadline})
+</insert>
+
+<select id="selectBySno" parameterType="int" resultType="social">
+	select sno, mid, ctno, stitle, scontent, swritedate, sstartdate, 
+	 sstarttime, sfee, smembercount, sstatus, saddress, sdeadline
+	from social
+	where sno=#{sno}
+</select>
+
+<select id="selectSocialListByParams" parameterType="Map" resultType="social">
+	select rnum, sno, stitle, saddress, sfee, ctno
+	from(
+		select rownum as rnum, sno, stitle, saddress, sfee, ctno
+		from(
+			select sno, stitle, saddress, sfee, ctno
+			from social
+			where <![CDATA[sdeadline > sysdate and sstatus not in ('cancel')]]>
+			<if test="ctno != null">
+			 and ctno=#{ctno}
+			</if>
+			<choose>
+				<when test="sort != null and sort.equals('deadline')">
+					order by sdeadline, sstarttime
+				</when>
+				<otherwise>
+					order by sno desc
+				</otherwise>
+			</choose>
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]> 
+</select>
+
+<select id="selectSthumbBySno" parameterType="int" resultType="social">
+	select sthumbname, sthumbtype, sthumbdata
+	from social
+	where sno=#{sno}
+</select>
+
+<select id="countByCtno" parameterType="Map" resultType="int">
+	select count(*)
+	from social
+	where <![CDATA[sdeadline > sysdate and sstatus not in ('cancel')]]>
+	<if test="ctno != null">
+	and ctno=#{ctno}
+	</if>
+</select>
+
+<update id="updateSstatusBySno" parameterType="Map">
+	update social set sstatus=#{sstatus}
+	where sno=#{sno}
+</update>
+
+<select id="getMainSocial" resultType="Social">
+	select rownum , sno, stitle, saddress, sfee, ctno, sstatus
+	from(
+	    select sno, stitle, saddress, sfee, ctno, sstatus
+	    from social
+	    where <![CDATA[sdeadline > sysdate]]> and sstatus not in ('cancel')
+	    order by sno desc
+	    )
+	where <![CDATA[rownum <= 4]]>
+</select>
+
+<select id="selectSpayInfoBySno" parameterType="int" resultType="social">
+	select sno, mid, stitle, sstartdate, sstarttime, saddress, sfee, sstatus, sdeadline, smembercount
+	from social
+	where sno=#{sno}
+</select>
+
+<select id="selectJoinHistoryByPager" parameterType="Map" resultType="social">
+	select rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline, review
+	from(
+		select rownum as rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline, review
+		from(
+			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline, (
+                select count(*)
+                from review
+               	where  social.sno=review.sno and review.mid=#{mid}
+            ) as review
+			from social
+			where sstatus not in ('cancel') and sno in (
+				select sno
+				from sjoin
+				where mid=#{mid}
+			)
+			order by sdeadline desc, sstarttime desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="selectJoinHistoryCnt" parameterType="String" resultType="int">
+	select count(*)
+	from social
+	where sstatus not in ('cancel') and sno in (
+		select sno
+		from sjoin
+		where mid=#{mid}
+	)
+</select>
+
+<select id="selectRecruitHistoryByPager" parameterType="Map" resultType="social">
+	select rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+	from(
+		select rownum as rnum, sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+		from(
+			select sno, stitle, saddress, sfee, ctno, sstatus, sdeadline
+			from social
+			where sstatus not in ('cancel') and mid=#{mid}
+			order by sdeadline desc, sstarttime desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="selectRecruitHistoryCnt" parameterType="String" resultType="int">
+	select count(*)
+	from social
+	where sstatus not in ('cancel') and mid=#{mid}
+</select>
+
+<select id="getApplyAssemble" parameterType="String" resultType="Social">
+	select sno, stitle, saddress, sfee, sstatus, sdeadline
+    from social
+    where <![CDATA[ sdeadline > sysdate and rownum <= 3 ]]> and sstatus not in ('cancel') 
+	and sno in ( select sno from sjoin where mid=#{mid} )
+          order by sdeadline desc
+</select>
+
+<select id="selectIsDeadlineBySno" parameterType="int" resultType="Date">
+	select sdeadline
+	from social
+	where sno=#{sno}
+</select>
+
+<select id="selectByKeyword" parameterType="String">
+	select count(*)
+	from social
+	where stitle like '%' || #{keyword} || '%' and sstatus not in ('cancel')
+	and <![CDATA[sdeadline > sysdate]]>
+</select>
+
+<select id="selectSearchByStitle" parameterType="Map" resultType="Social">
+    select stitle, sno, saddress, sfee
+    from (
+        select stitle, sno, saddress, sfee, rownum as rnum
+        from social
+        where  
+            (sstatus = 'recruitment' or sstatus = 'full')
+            and stitle like '%' || #{keyword} || '%'
+            and sdeadline > sysdate
+            and #{pager.endRowNo} >= rownum
+        order by sno desc
+    )
+    where rnum >= #{pager.startRowNo}
+</select>
+
+	<select id="countAll" resultType="int">
+		select count(*) from social
+	</select>
+	<select id="selectByPage" parameterType="pager" resultType="social">
+	<![CDATA[ 
+	select rnum, sno, stitle, mid, swritedate, sstatus
+	from(
+		select rownum as rnum, sno, stitle, mid, swritedate, sstatus
+		from(
+			select sno, stitle, mid, swritedate, sstatus
+			from social
+			order by swritedate desc	
+		)
+		where rownum <= #{endRowNo}
+	)
+	where rnum >= #{startRowNo}
+	]]>
+</select>
+
+<select id="getMainCateSocial" parameterType="String" resultType="Social">
+select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno
+    from (
+        select sno, stitle, saddress, sfee, sstatus, swritedate, sdeadline, mid, ctno,
+               row_number() over (partition by ctno order by sdeadline desc) as rn
+        from social
+        where ctno in (
+            select ctno
+            from mcategory
+            where mid = #{mid}
+        )
+        and sstatus not in ('cancel')
+        and <![CDATA[sdeadline > sysdate]]>
+    )
+    where <![CDATA[rn <= 4]]>
+    order by sno desc
+</select>
+
+<select id="getRecruitAssemble" parameterType="String" resultType="Social">
+	select sno, stitle, saddress, sfee, sstatus, sdeadline, mid
+    from social
+    where <![CDATA[ sdeadline > sysdate and rownum <= 3 ]]> and sstatus not in ('cancel') and mid=#{mid}
+    order by sno desc
+</select>
+
+<select id="getRecruitedAssemble" parameterType="String" resultType="Social">
+	select sno, stitle, saddress, sfee, sstatus, sdeadline, mid
+    from social
+    where <![CDATA[ sdeadline < sysdate and rownum <= 3 ]]> and sstatus not in ('cancel') and mid=#{mid}
+    order by sno desc
+</select>
+
+<select id="getInprogress" parameterType="Map" resultType="Social">
+	select rnum, sno, stitle, saddress, sfee, sstatus, sdeadline
+		     from (
+			    select rownum as rnum, sno, stitle, saddress, sfee, sstatus, sdeadline 
+			    from (
+			        select sno, stitle, saddress, sfee, sstatus, sdeadline 
+			        from social
+			        where <![CDATA[ sdeadline > sysdate and sstatus not in ('cancel') ]]>
+			            and mid=#{mid}
+			            <if test="ctno != null">
+						 and ctno=#{ctno}
+						</if>
+						<choose>
+							<when test="sort != null and sort.equals('deadline')">
+								order by sdeadline, sstarttime
+							</when>
+							<otherwise>
+								order by sno desc
+							</otherwise>
+						</choose>
+			        )
+		          where <![CDATA[ rownum <= #{pager.endRowNo} ]]>
+		      )
+		      where <![CDATA[ rnum >= #{pager.startRowNo} ]]>
+</select>
+
+<select id="getProgressed" parameterType="Map" resultType="Social">
+	select rnum, sno, stitle, saddress, sfee, sstatus, sdeadline
+	from (
+		select rownum as rnum, sno, stitle, saddress, sfee, sstatus, sdeadline
+		from (
+			select sno, stitle, saddress, sfee, sstatus, sdeadline
+			from social
+			where <![CDATA[ sdeadline < sysdate and sstatus not in ('cancel') ]]>
+				and mid=#{mid}
+				<if test="ctno != null">
+				and	ctno=#{ctno}
+				</if>
+				<choose>
+					<when test="sort != null and sort.equals('deadline')">
+						order by sdeadline, sstarttime
+					</when>
+					<otherwise>
+						order by sno desc
+					</otherwise>
+				</choose>
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo} ]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo} ]]>
+</select>
+
+<select id="countInprogress" parameterType="Map" resultType="int">
+	select count(*)
+	from social
+	where mid=#{mid} and <![CDATA[sdeadline > sysdate and sstatus not in ('cancel')]]>
+	<if test="ctno != null">
+	and ctno=#{ctno}
+	</if>
+</select>
+
+<select id="countProgressed" parameterType="Map" resultType="int">
+	select count(*)
+	from social
+	where mid=#{mid} and <![CDATA[sdeadline < sysdate and sstatus not in ('cancel')]]>
+	<if test="ctno != null">
+	and ctno=#{ctno}
+	</if>
+</select>
+	
+
+<resultMap type="HashMap" id="socialAdminForm">
+  <result property="sno" column="sno" />
+  <result property="stitle" column="stitle" />
+  <result property="ctname" column="ctname"/>
+  <result property="saddress" column="saddress"/>
+  <result property="swriteDate" column="swriteDate" />
+  <result property="sstartDate" column="sstartDate" />
+  <result property="sstartTime" column="sstartTime" />
+  <result property="sstatus" column="sstatus" />
+  <result property="sstartdate" column="sstartdate" />
+  <result property="sdeadline" column="sdeadline" />
+  <result property="sfee" column="sfee" />
+  <result property="smemberCount" column="smemberCount" />
+  <result property="curjoin" column="curjoin" />
+</resultMap>
+
+<select id="selectRecruitInAdminByPager" parameterType="Map" resultMap="socialAdminForm">
+	select rnum, sno, stitle, saddress, sfee, ctname, 
+	sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+	from(
+		select rownum as rnum, sno, stitle, saddress, 
+		sfee, ctname, sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+		from(
+			select social.sno, stitle, saddress, sfee, ctname, sstatus, 
+			sdeadline, smembercount, sstartdate, swritedate, sstarttime, (select count(*) from sjoin where sjoin.sno=social.sno) as curjoin
+			from social, category
+			where social.mid=#{mid} and category.ctno = social.ctno
+			order by sdeadline desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="selectJoinInAdminByPager" parameterType="Map" resultMap="socialAdminForm">
+	select rnum, sno, stitle, saddress, sfee, ctname, 
+	sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+	from(
+		select rownum as rnum, sno, stitle, saddress, 
+		sfee, ctname, sstatus, sdeadline, smembercount, sstartdate, swritedate, sstarttime, curjoin
+		from(
+			select social.sno, stitle, saddress, sfee, ctname, sstatus, 
+			sdeadline, smembercount, sstartdate, swritedate, sstarttime, (select count(*) from sjoin where sjoin.sno=social.sno) as curjoin
+			from social, category, sjoin
+			where sjoin.mid=#{mid} and category.ctno = social.ctno and sjoin.sno = social.sno
+			order by sdeadline desc, sstarttime desc
+		)
+		where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+	)
+	where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+</select>
+
+<select id="countAllByMid" parameterType="String" resultType="int">
+	select count(*)
+	from social
+	where mid=#{mid}
+</select>
+<select id="countSocialByKeyword" parameterType="Map" resultType="int">
+		select count(*)
+		from social
+		where 
+		<if test="option.equals('title')">
+			stitle like '%' || #{keyword} || '%'
+		</if>
+		<if test="option.equals('mid')">
+			mid like '%' || #{keyword} || '%'
+		</if>
+	</select>
+	<select id="selectSocialByKeywordPage" parameterType="Map" resultType="social">
+		select rnum, sno, stitle, mid, swritedate, sstatus
+		from(
+			select rownum as rnum, sno, stitle, mid, swritedate, sstatus
+			from(
+				select sno, stitle, mid, swritedate, sstatus
+				from social
+				where <if test="option.equals('title')">
+						stitle like '%' || #{keyword} || '%'
+					</if>
+					<if test="option.equals('mid')">
+						mid like '%' || #{keyword} || '%'
+					</if>
+				order by sno desc	
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]>
+	</select>
+	<select id="selectAllSocial" resultType="social">
+		select sno, ctno
+		from social 
+	</select>
+	
+	
+</mapper>

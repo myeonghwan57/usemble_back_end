@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.SjoinDao">
+	<insert id="insert" parameterType="sjoin">
+		insert into sjoin(mid, sno)
+		values(#{mid}, #{sno})
+	</insert>
+	
+	<select id="count" parameterType="int">
+		select count(*)
+		from sjoin
+		where sno=#{sno}
+	</select>
+	
+	<select id="isSjoin" parameterType="sjoin" resultType="boolean">
+		select count(*)
+		from sjoin
+		where mid=#{mid} and sno=#{sno}
+	</select>
+
+	<delete id="deleteSjoin" parameterType="sjoin">
+		delete from sjoin where mid=#{mid} and sno=#{sno}
+	</delete>
+	
+	
+</mapper>

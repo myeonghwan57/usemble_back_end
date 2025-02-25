@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.AlarmDao">
+	<insert id="insert" parameterType="alarm">
+		<selectKey keyProperty="ano" resultType="int" order="BEFORE">
+			select seq_alarm.nextval from dual
+		</selectKey>
+		insert into alarm(ano, mid, message, adate, acheck)
+		values(#{ano}, #{mid}, #{message}, sysdate, #{acheck})
+	</insert>
+
+	<select id="selectAlarmByPager" parameterType="Map" resultType="alarm">
+		select rnum, ano, mid, message, adate, acheck 
+		from(
+			select rownum as rnum, ano, mid, message, adate, acheck 
+			from(
+				select ano, mid, message, adate, acheck 
+				from alarm
+				where mid=#{mid} and acheck=0
+				order by ano desc
+			)
+			where <![CDATA[ rownum <= #{pager.endRowNo}]]>
+		)
+		where <![CDATA[ rnum >= #{pager.startRowNo}]]>  
+	</select>
+
+	<select id="countAlarmByMid" parameterType="String" resultType="int">
+		select count(*)
+		from alarm
+		where mid=#{mid} and acheck=0
+	</select>
+
+	<update id="updateAlarmByAno" parameterType="int">
+		update alarm
+		set acheck=1
+		where ano=#{ano}
+	</update>
+
+	<select id="getAlarmStateByMid" parameterType="String" resultType="boolean">
+		select count(*)
+		from alarm
+		where mid=#{mid} and acheck=0
+	</select>
+</mapper>

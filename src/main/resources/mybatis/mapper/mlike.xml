@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.MlikeDao">
+	<select id="selectLikeListByMid" parameterType="Map" resultType="String">
+		<![CDATA[
+		select fmid
+		from(
+			select rnum, fmid
+			from (
+			    select rownum as rnum, fmid
+			    from (
+			        select fmid
+			        from mlike
+			        where mid=#{mid}
+			        order by fmid
+			    )
+			    where rownum <= #{pager.endRowNo}
+			)
+			where rnum >= #{pager.startRowNo}
+		)
+		]]>
+	</select>
+
+	<select id="count" parameterType="String" resultType="int">
+		select count(*)
+		from mlike
+		where fmid = #{mid}
+	</select>
+
+	<select id="myLikeCount" parameterType="String" resultType="int">
+		select count(*)
+		from mlike
+		where mid = #{mid}
+	</select>
+
+	<select id="selectLikeByMidFmid" parameterType="Mlike" resultType="boolean">
+		select count(*)
+		from mlike
+		where mid=#{mid} and fmid=#{fmid}
+	</select>
+
+	<insert id="insertLikeByMidFmid" parameterType="Mlike">
+			insert into mlike(mid, fmid)
+			values(#{mid}, #{fmid})
+	</insert>
+	
+	<delete id="deleteLikeByMidFmid" parameterType="Mlike">
+			delete from mlike where mid=#{mid} and fmid=#{fmid}
+	</delete>
+</mapper>
