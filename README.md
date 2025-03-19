@@ -28,7 +28,17 @@
 ### 전체프로세스 정의 (관리자)
 ![image](https://github.com/user-attachments/assets/a120ce82-4973-43f2-8220-71c350c75e81)
 
+### 프로세스를 구성하는 구현기능 정의
+![image](https://github.com/user-attachments/assets/4e2d7936-90bd-4240-94fe-fe1ee9ff475c)
+### 시스템 아키텍져(MSA)
+![image](https://github.com/user-attachments/assets/1c7a99a8-3450-4984-a80c-b32c14f6f4fc)
+### 사용되는 기술 및 툴
+![image](https://github.com/user-attachments/assets/582b792b-2d12-4b9b-a1e0-9362671f2c05)
+### 프로젝트 일정표
+![image](https://github.com/user-attachments/assets/f171a076-9667-45bb-93df-6c3bb0987b71)
+### 팀원 소개 및 역할분담
 
-
-
+## DB 모델링
+### 전체 DB 스키마(ERD)
+![image](https://github.com/user-attachments/assets/2c8b5ed1-70e7-46ba-b98b-9fae43591d98)
 
