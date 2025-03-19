@@ -44,11 +44,27 @@
 
 ## Front-end 및 Back-end 설계 및 구현
 <details><summary>
-  ### 페이지 흐름도
+**페이지 흐름도**
 </summary>
 
-
 ![image](https://github.com/user-attachments/assets/2c2aa6f0-98e1-4ea6-9f55-8c94b2b5fa14)
+![image](https://github.com/user-attachments/assets/cfc8b6ac-3ad2-4753-b968-6b302e11114a)
+![image](https://github.com/user-attachments/assets/ec173b4f-30d9-4866-91aa-68c8fa4a1ecf)
+![image](https://github.com/user-attachments/assets/87cee3e5-1d9b-43b9-8986-1c8fb5ae1275)
+![image](https://github.com/user-attachments/assets/89196ae6-ab78-4b9e-a2d4-5ca9fc151923)
+![image](https://github.com/user-attachments/assets/65cff688-5c17-460a-9fe7-ecba7ace2916)
+![image](https://github.com/user-attachments/assets/2b54411f-e753-4a1b-aeaf-0a6627d4b618)
+
+</details>
+
+
+<details><summary>
+**Back-end API service**
+</summary>
+![image](https://github.com/user-attachments/assets/11aadc7c-dc96-4bee-9b91-445cb799a92b)
+![image](https://github.com/user-attachments/assets/4c8028b5-bf48-42f5-a3b1-4aab8713bb75)
+![image](https://github.com/user-attachments/assets/a5d15e44-3c92-45bd-bd33-6b9448f2f40d)
+![image](https://github.com/user-attachments/assets/84ba75e3-eff2-4330-b615-c6c653e051e7)
 
 </details>
 
