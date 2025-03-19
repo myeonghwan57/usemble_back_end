@@ -42,3 +42,13 @@
 ### 전체 DB 스키마(ERD)
 ![image](https://github.com/user-attachments/assets/2c8b5ed1-70e7-46ba-b98b-9fae43591d98)
 
+## Front-end 및 Back-end 설계 및 구현
+<details><summary>
+</summary>
+
+### 페이지 흐름도
+![image](https://github.com/user-attachments/assets/2c2aa6f0-98e1-4ea6-9f55-8c94b2b5fa14)
+
+</details>
+
+
