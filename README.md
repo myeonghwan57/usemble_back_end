@@ -46,6 +46,7 @@
 <details><summary>
 페이지 흐름도
 </summary>
+
 ![image](https://github.com/user-attachments/assets/2c2aa6f0-98e1-4ea6-9f55-8c94b2b5fa14)
 ![image](https://github.com/user-attachments/assets/cfc8b6ac-3ad2-4753-b968-6b302e11114a)
 ![image](https://github.com/user-attachments/assets/ec173b4f-30d9-4866-91aa-68c8fa4a1ecf)
@@ -59,6 +60,7 @@
 <details><summary>
 Back-end API service
 </summary>
+
 ![image](https://github.com/user-attachments/assets/11aadc7c-dc96-4bee-9b91-445cb799a92b)
 ![image](https://github.com/user-attachments/assets/4c8028b5-bf48-42f5-a3b1-4aab8713bb75)
 ![image](https://github.com/user-attachments/assets/a5d15e44-3c92-45bd-bd33-6b9448f2f40d)
@@ -69,6 +71,7 @@ Back-end API service
 <details><summary>
 메인페이지
 </summary>
+
   컴포넌트 구성
 ![image](https://github.com/user-attachments/assets/3fff898e-da6f-46c6-9c80-d28c87cee092)
   사용흐름
@@ -82,6 +85,7 @@ Back-end API service
 <details><summary>
 인증기능
 </summary>
+
 컴포넌트 구성 및 사용흐름
 ![image](https://github.com/user-attachments/assets/5bc64a5c-e025-4eb9-9948-9948e84b8cff)
 Axios
@@ -97,6 +101,7 @@ Back-end
 <details><summary>
 소셜링 기능(리스트)
 </summary>
+
 컴포넌트 구성 및 사용흐름
 ![image](https://github.com/user-attachments/assets/7885a186-15bc-46a0-8486-27e340f37693)
 Axios
@@ -108,6 +113,7 @@ Back-end
 <details><summary>
 소셜링 기능(읽기)
 </summary>
+
 컴포넌트 구성 및 사용흐름
 ![image](https://github.com/user-attachments/assets/3cd127ee-a9e6-462f-8533-e4c289991b64)
 Axios
@@ -120,6 +126,7 @@ Back-end
 <details><summary>
 소셜링 기능(작성)
 </summary>
+
 컴포넌트 구성 및 Axios
 ![image](https://github.com/user-attachments/assets/73c85223-1052-456a-9ae3-161d122285f5)
 Back-end
@@ -129,6 +136,7 @@ Back-end
 <details><summary>
 소셜링 기능(사용자 페이지)
 </summary>
+
 컴포넌트 구성 
 ![image](https://github.com/user-attachments/assets/31a5af26-d508-4c04-a9f9-28cf5cf6c9e1)
 Axios
@@ -143,6 +151,7 @@ Back-end
 <details><summary>
 소셜링 기능(검색 페이지)
 </summary>
+
 컴포넌트 구성 Axios
 ![image](https://github.com/user-attachments/assets/1a1c9bf8-0f51-4097-ad35-5a8a6ec707e8)
 Back-end
@@ -152,6 +161,7 @@ Back-end
 <details><summary>
 마이페이지
 </summary>
+
 컴포넌트 구성
 ![image](https://github.com/user-attachments/assets/d4ad1b94-da8d-4142-9d2f-e4f5457ba0fb)
 ![image](https://github.com/user-attachments/assets/ee752b28-8e28-4e85-9a25-a9e88072fc5c)
@@ -164,6 +174,7 @@ Back-end
 <details><summary>
 마이페이지 소셜링 내역
 </summary>
+
 컴포넌트 구성
 ![image](https://github.com/user-attachments/assets/9c69676a-6657-4911-9389-d798dc2a8f52)
 Axios
@@ -175,6 +186,7 @@ Back-end
 <details><summary>
 마이페이지 리뷰
 </summary>
+
 컴포넌트 구성
 ![image](https://github.com/user-attachments/assets/d48e7865-6e30-4d0b-8c18-1d1ff2232535)
 Axios
@@ -186,6 +198,7 @@ Back-end
 <details><summary>
 마이페이지 개인정보
 </summary>
+
 컴포넌트 구성
 ![image](https://github.com/user-attachments/assets/d05e612f-b603-465a-ae69-24c8d6dcb62f)
 Axios
@@ -197,6 +210,7 @@ Back-end
 <details><summary>
 관리자 페이지 대시보드
 </summary>
+
 컴포넌트 구성 Axios
 ![image](https://github.com/user-attachments/assets/5865e924-19f0-4f24-9326-054e4d780b0c)
 Back-end
@@ -206,15 +220,16 @@ Back-end
 <details><summary>
 관리자 페이지 소셜링 관리
 </summary>
+
 컴포넌트 구성 Axios
 ![image](https://github.com/user-attachments/assets/27ec66f9-aa96-4455-87c2-70663596125e)
 Back-end
 ![image](https://github.com/user-attachments/assets/5cb0a591-1b05-4b5d-880a-804e90c5f8f7)
 </details>
-<details><summary>
-  
+<details><summary> 
 관리자 페이지 회원 관리
 </summary>
+
 컴포넌트 구성 Axios
 ![image](https://github.com/user-attachments/assets/833444f2-e553-42c2-a420-9fef278db6bf)
 Back-end
@@ -224,6 +239,7 @@ Back-end
 <details><summary>
 관리자 페이지 회원 상세
 </summary>
+
 컴포넌트 구성 Axios
 ![image](https://github.com/user-attachments/assets/1f801c8f-fa5b-4362-9803-27d6a4f5c433)
 Back-end
@@ -233,7 +249,8 @@ Back-end
 <details><summary>
 관리자 페이지 공지사항 관리
 </summary>
-  컴포넌트 구성 Axios
+
+컴포넌트 구성 Axios
 ![image](https://github.com/user-attachments/assets/000da9ea-d22d-48a0-9b49-429f854c6cd1)
 ![image](https://github.com/user-attachments/assets/d7b69ee4-5414-428a-8e80-e3c47c738db9)
 Back-end
