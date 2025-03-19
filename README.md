@@ -44,9 +44,10 @@
 
 ## Front-end 및 Back-end 설계 및 구현
 <details><summary>
+  ### 페이지 흐름도
 </summary>
 
-### 페이지 흐름도
+
 ![image](https://github.com/user-attachments/assets/2c2aa6f0-98e1-4ea6-9f55-8c94b2b5fa14)
 
 </details>
