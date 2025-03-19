@@ -267,7 +267,7 @@ Back-end API service
 ![image](https://github.com/user-attachments/assets/7924b051-e38e-47a6-959a-cd779169cbbe)
 
 </details>
-
+<details><summary>
 관리자 페이지 공지사항 관리
 </summary>
   컴포넌트 구성 Axios
